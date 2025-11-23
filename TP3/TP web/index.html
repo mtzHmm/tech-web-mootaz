@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP JavaScript - Exercices ES6</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 TP JavaScript - ES6 & Concepts Avancés</h1>
+            <p class="subtitle">Découvrez les fonctionnalités modernes de JavaScript</p>
+        </header>
+
+        <main>
+            <!-- Exercice 1 -->
+            <section class="exercise" id="exercise1">
+                <div class="exercise-header">
+                    <h2>📦 Exercice 1 - Variables et Portée</h2>
+                    <button class="run-btn" onclick="runExercise1()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>var a = 10;   // portée fonctionnelle
+let b = 20;   // portée bloc  
+const c = 30; // portée bloc + non réassignable
+
+{
+  var a = 100;  // Remplace la variable 'a'
+  let b = 200;  // Existe uniquement dans ce bloc
+  const c = 300; // Existe uniquement dans ce bloc
+}</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output1"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercice 2 -->
+            <section class="exercise" id="exercise2">
+                <div class="exercise-header">
+                    <h2>🏹 Exercice 2 - Fonctions Fléchées</h2>
+                    <button class="run-btn" onclick="runExercise2()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>// Version classique
+function sommeClassique(a, b) {
+  return a + b;
+}
+
+// Version fléchée avec return explicite
+const somme1 = (a, b) => {
+  return a + b;
+};
+
+// Version fléchée avec return implicite
+const somme2 = (a, b) => a + b;</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output2"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercice 3 -->
+            <section class="exercise" id="exercise3">
+                <div class="exercise-header">
+                    <h2>🔄 Exercice 3 - Destructuring</h2>
+                    <button class="run-btn" onclick="runExercise3()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>const user = { name: "Noor", age: 10, city: "Tunis" };
+const { name, age } = user; // Extraction</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output3"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercice 4 -->
+            <section class="exercise" id="exercise4">
+                <div class="exercise-header">
+                    <h2>📋 Exercice 4 - Spread Operator</h2>
+                    <button class="run-btn" onclick="runExercise4()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>const T1 = [1, 2, 3];
+const T2 = [4, 5, 6];
+const fusion = [...T1, ...T2];
+
+const person = { name: "Ali", age: 25 };
+const newPerson = { ...person, age: 30 };</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercice 5 -->
+            <section class="exercise" id="exercise5">
+                <div class="exercise-header">
+                    <h2>📚 Exercice 5 - Objet Simple</h2>
+                    <button class="run-btn" onclick="runExercise5()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>const livre = {
+  titre: "L'Étranger",
+  auteur: "Albert Camus",
+  annee: 1942,
+  getInfo() {
+    return `${this.titre} écrit par ${this.auteur} en ${this.annee}`;
+  }
+};</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output5"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercice 6 -->
+            <section class="exercise" id="exercise6">
+                <div class="exercise-header">
+                    <h2>🎓 Exercice 6 - Classe ES6</h2>
+                    <button class="run-btn" onclick="runExercise6()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>class Etudiant {
+  constructor(nom, note) {
+    this.nom = nom;
+    this.note = note;
+  }
+
+  getMention() {
+    if (this.note >= 16) return "Très bien";
+    if (this.note >= 14) return "Bien";
+    if (this.note >= 10) return "Passable";
+    return "Échec";
+  }
+}</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output6"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercice 7 -->
+            <section class="exercise" id="exercise7">
+                <div class="exercise-header">
+                    <h2>📊 Exercice 7 - Tableaux Avancés</h2>
+                    <button class="run-btn" onclick="runExercise7()">Exécuter</button>
+                </div>
+                <div class="exercise-content">
+                    <div class="code-section">
+                        <h3>Code :</h3>
+                        <pre><code>const notes = [12, 5, 17, 9, 20];
+
+// Moyenne avec reduce
+const moyenne = notes.reduce((acc, val) => acc + val, 0) / notes.length;
+
+// Tri décroissant
+const triDecroissant = [...notes].sort((a, b) => b - a);
+
+// Filtrer les notes ≥ 10
+const notesAdmissibles = notes.filter(note => note >= 10);</code></pre>
+                    </div>
+                    <div class="result-section">
+                        <h3>Résultat :</h3>
+                        <div class="output" id="output7"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Bouton pour exécuter tous les exercices -->
+            <div class="global-actions">
+                <button class="run-all-btn" onclick="runAllExercises()">🎯 Exécuter Tous les Exercices</button>
+                <button class="clear-btn" onclick="clearAllOutputs()">🗑️ Effacer les Résultats</button>
+            </div>
+        </main>
+
+        <footer>
+            <p>© 2025 TP JavaScript - Concepts ES6 et plus</p>
+        </footer>
+    </div>
+
+    <script src="console.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
