@@ -1,0 +1,76 @@
+<div class="book-list-container">
+  <div *ngIf="books.length === 0" class="empty-state">
+    📚 Aucun livre trouvé
+    <p>Ajoutez votre premier livre ou modifiez vos critères de recherche</p>
+  </div>
+
+  <div *ngIf="books.length > 0" class="books-grid">
+    <div 
+      *ngFor="let book of books; trackBy: trackByBookId" 
+      class="book-card"
+      [class]="getAvailabilityClass(book)">
+      
+      <!-- En-tête de la carte -->
+      <div class="book-header">
+        <h3 class="book-title" [title]="book.title">{{ book.title }}</h3>
+        <div class="availability-badge" [class]="getAvailabilityClass(book)">
+          {{ book.isAvailable ? '✅' : '❌' }}
+        </div>
+      </div>
+      
+      <!-- Informations du livre -->
+      <div class="book-info">
+        <div class="info-row">
+          <span class="label">👤 Auteur:</span>
+          <span class="value">{{ book.author }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">📅 Publication:</span>
+          <span class="value">{{ formatDate(book.releaseDate) }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">📚 Catégorie:</span>
+          <span class="value category-tag">{{ book.category }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">📧 Éditeur:</span>
+          <span class="value">{{ book.publisherEmail }}</span>
+        </div>
+        
+        <div class="info-row">
+          <span class="label">📞 Téléphone:</span>
+          <span class="value">{{ book.publisherPhone }}</span>
+        </div>
+      </div>
+      
+      <!-- Statut du stock -->
+      <div class="stock-section">
+        <div class="stock-info" [class]="getStockClass(book)">
+          <span class="stock-label">Stock:</span>
+          <span class="stock-value">{{ book.stock }}</span>
+          <span class="stock-status">{{ getStockStatus(book) }}</span>
+        </div>
+      </div>
+      
+      <!-- Actions -->
+      <div class="book-actions">
+        <button 
+          class="btn btn-edit"
+          (click)="onEdit(book)"
+          [title]="'Modifier ' + book.title">
+          ✏️ Éditer
+        </button>
+        
+        <button 
+          class="btn btn-delete"
+          (click)="onDelete(book)"
+          [title]="'Supprimer ' + book.title">
+          🗑️ Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

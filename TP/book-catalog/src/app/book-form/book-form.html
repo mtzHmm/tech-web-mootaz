@@ -1,0 +1,174 @@
+<form #bookForm="ngForm" (ngSubmit)="onSubmit(bookForm)" class="book-form" novalidate>
+  <!-- Titre du livre -->
+  <div class="form-group">
+    <label for="title">Titre du livre *</label>
+    <input 
+      id="title"
+      name="title"
+      type="text" 
+      class="form-control"
+      [(ngModel)]="formData.title"
+      #titleInput="ngModel"
+      required
+      minlength="2"
+      placeholder="Entrez le titre du livre">
+    
+    <div *ngIf="showErrors && titleInput.invalid" class="error-message">
+      <span *ngIf="titleInput.errors?.['required']">⚠️ Le titre est obligatoire</span>
+      <span *ngIf="titleInput.errors?.['minlength']">⚠️ Le titre doit contenir au moins 2 caractères</span>
+    </div>
+  </div>
+
+  <!-- Auteur -->
+  <div class="form-group">
+    <label for="author">Auteur *</label>
+    <input 
+      id="author"
+      name="author"
+      type="text" 
+      class="form-control"
+      [(ngModel)]="formData.author"
+      #authorInput="ngModel"
+      required
+      minlength="2"
+      placeholder="Nom de l'auteur">
+    
+    <div *ngIf="showErrors && authorInput.invalid" class="error-message">
+      <span *ngIf="authorInput.errors?.['required']">⚠️ L'auteur est obligatoire</span>
+      <span *ngIf="authorInput.errors?.['minlength']">⚠️ Le nom de l'auteur doit contenir au moins 2 caractères</span>
+    </div>
+  </div>
+
+  <!-- Email de l'éditeur -->
+  <div class="form-group">
+    <label for="publisherEmail">Email de l'éditeur *</label>
+    <input 
+      id="publisherEmail"
+      name="publisherEmail"
+      type="email" 
+      class="form-control"
+      [(ngModel)]="formData.publisherEmail"
+      #emailInput="ngModel"
+      required
+      email
+      placeholder="email@editeur.com">
+    
+    <div *ngIf="showErrors && (emailInput.invalid || !isEmailValid())" class="error-message">
+      <span *ngIf="emailInput.errors?.['required']">⚠️ L'email est obligatoire</span>
+      <span *ngIf="emailInput.errors?.['email'] || !isEmailValid()">⚠️ Format d'email invalide</span>
+    </div>
+  </div>
+
+  <!-- Téléphone de l'éditeur -->
+  <div class="form-group">
+    <label for="publisherPhone">Téléphone de l'éditeur *</label>
+    <input 
+      id="publisherPhone"
+      name="publisherPhone"
+      type="tel" 
+      class="form-control"
+      [(ngModel)]="formData.publisherPhone"
+      #phoneInput="ngModel"
+      required
+      pattern="[0-9]{8}"
+      placeholder="12345678 (8 chiffres)">
+    
+    <div *ngIf="showErrors && (phoneInput.invalid || !isPhoneValid())" class="error-message">
+      <span *ngIf="phoneInput.errors?.['required']">⚠️ Le téléphone est obligatoire</span>
+      <span *ngIf="phoneInput.errors?.['pattern'] || !isPhoneValid()">⚠️ Le téléphone doit contenir exactement 8 chiffres</span>
+    </div>
+  </div>
+
+  <!-- Date de publication -->
+  <div class="form-group">
+    <label for="releaseDate">Date de publication *</label>
+    <input 
+      id="releaseDate"
+      name="releaseDate"
+      type="date" 
+      class="form-control"
+      [(ngModel)]="formData.releaseDate"
+      #dateInput="ngModel"
+      required
+      [max]="getCurrentDate()">
+    
+    <div *ngIf="showErrors && (dateInput.invalid || !isDateValid())" class="error-message">
+      <span *ngIf="dateInput.errors?.['required']">⚠️ La date de publication est obligatoire</span>
+      <span *ngIf="!isDateValid()">⚠️ La date ne peut pas être dans le futur</span>
+    </div>
+  </div>
+
+  <!-- Catégorie -->
+  <div class="form-group">
+    <label for="category">Catégorie *</label>
+    <select 
+      id="category"
+      name="category"
+      class="form-control"
+      [(ngModel)]="formData.category"
+      #categoryInput="ngModel"
+      required>
+      <option value="">Sélectionnez une catégorie</option>
+      <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+    </select>
+    
+    <div *ngIf="showErrors && categoryInput.invalid" class="error-message">
+      <span *ngIf="categoryInput.errors?.['required']">⚠️ La catégorie est obligatoire</span>
+    </div>
+  </div>
+
+  <!-- Stock -->
+  <div class="form-group">
+    <label for="stock">Quantité en stock *</label>
+    <input 
+      id="stock"
+      name="stock"
+      type="number" 
+      class="form-control"
+      [(ngModel)]="formData.stock"
+      #stockInput="ngModel"
+      required
+      min="0"
+      placeholder="0">
+    
+    <div *ngIf="showErrors && stockInput.invalid" class="error-message">
+      <span *ngIf="stockInput.errors?.['required']">⚠️ La quantité est obligatoire</span>
+      <span *ngIf="stockInput.errors?.['min']">⚠️ La quantité ne peut pas être négative</span>
+    </div>
+  </div>
+
+  <!-- Disponibilité -->
+  <div class="form-group checkbox-group">
+    <label class="checkbox-label">
+      <input 
+        name="isAvailable"
+        type="checkbox" 
+        [(ngModel)]="formData.isAvailable"
+        class="checkbox-input">
+      <span class="checkbox-text">✅ Livre disponible</span>
+    </label>
+    <small class="help-text">Cochez si le livre est actuellement disponible à la vente</small>
+  </div>
+
+  <!-- Boutons d'action -->
+  <div class="form-actions">
+    <button 
+      type="submit" 
+      class="btn btn-primary"
+      [disabled]="showErrors && bookForm.invalid">
+      {{ isEditing ? '✏️ Mettre à jour' : '➕ Ajouter le livre' }}
+    </button>
+    
+    <button 
+      type="button" 
+      class="btn btn-secondary"
+      (click)="onCancel()">
+      {{ isEditing ? '❌ Annuler' : '🔄 Réinitialiser' }}
+    </button>
+  </div>
+
+  <!-- Indicateur de validation globale -->
+  <div *ngIf="showErrors && bookForm.invalid" class="form-summary-error">
+    🚫 Veuillez corriger les erreurs ci-dessus avant de soumettre le formulaire
+  </div>
+</form>

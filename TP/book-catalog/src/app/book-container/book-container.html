@@ -1,0 +1,64 @@
+<div class="container">
+  <!-- Statistiques -->
+  <div class="stats-section">
+    <div class="stat-card">
+      <h3>📚 Total Livres</h3>
+      <span class="stat-number">{{ totalBooks }}</span>
+    </div>
+    <div class="stat-card">
+      <h3>✅ Disponibles</h3>
+      <span class="stat-number available">{{ availableBooks }}</span>
+    </div>
+    <div class="stat-card">
+      <h3>❌ Indisponibles</h3>
+      <span class="stat-number unavailable">{{ totalBooks - availableBooks }}</span>
+    </div>
+  </div>
+
+  <!-- Contrôles de recherche et tri -->
+  <div class="controls-section">
+    <div class="search-container">
+      <label for="search">🔍 Rechercher:</label>
+      <input 
+        id="search"
+        type="text" 
+        [(ngModel)]="searchTerm" 
+        placeholder="Titre, auteur ou catégorie..."
+        class="search-input">
+    </div>
+    
+    <div class="sort-container">
+      <label for="sort">📋 Trier par:</label>
+      <select id="sort" [(ngModel)]="sortBy" class="sort-select">
+        <option value="title">Titre</option>
+        <option value="author">Auteur</option>
+        <option value="category">Catégorie</option>
+        <option value="available">Disponibilité</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Formulaire d'ajout/modification -->
+    <div class="form-section">
+      <h2>{{ bookToEdit ? '✏️ Modifier le livre' : '➕ Ajouter un livre' }}</h2>
+      <app-book-form
+        [categories]="categories"
+        [bookToEdit]="bookToEdit"
+        (bookAdded)="onAddBook($event)"
+        (bookUpdated)="onUpdateBook($event)"
+        (editCancelled)="onCancelEdit()">
+      </app-book-form>
+    </div>
+
+    <!-- Liste des livres -->
+    <div class="list-section">
+      <h2>📖 Liste des livres ({{ filteredAndSortedBooks.length }})</h2>
+      <app-book-list
+        [books]="filteredAndSortedBooks"
+        (bookDeleted)="onDeleteBook($event)"
+        (bookEdited)="onEditBook($event)">
+      </app-book-list>
+    </div>
+  </div>
+</div>
