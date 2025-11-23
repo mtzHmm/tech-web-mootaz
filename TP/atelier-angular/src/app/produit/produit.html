@@ -1,0 +1,29 @@
+<div class="produit-container">
+  <h2>{{ nomProduit }}</h2>
+  
+  <!-- Activité 2: Property Binding pour l'image -->
+  <img [src]="imageUrl" [alt]="nomProduit" class="produit-image">
+  
+  <!-- Activité 8: Binding avec Pipes pour le prix -->
+  <p class="prix">Prix: {{ prix | currency:'EUR':'symbol':'1.2-2' }}</p>
+  
+  <!-- Activité 5: Class Binding et Style Binding -->
+  <p [class.en-stock]="enStock" 
+     [class.hors-stock]="!enStock"
+     [style.color]="enStock ? 'green' : 'red'"
+     [style.font-weight]="enStock ? 'bold' : 'normal'">
+    {{ enStock ? 'En stock' : 'Hors stock' }}
+  </p>
+  
+  <!-- Activité 3: Event Binding -->
+  <button (click)="afficherAlerte()" 
+          [disabled]="!enStock"
+          class="btn-ajouter">
+    Ajouter au panier
+  </button>
+  
+  <!-- Activité 5: Bouton pour basculer le stock -->
+  <button (click)="basculerStock()" class="btn-stock">
+    Basculer le stock
+  </button>
+</div>

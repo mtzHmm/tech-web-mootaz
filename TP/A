@@ -1,0 +1,23 @@
+# Ateliers Pratiques Angular
+
+## Localisation
+L'atelier Angular complet avec tous les exercices se trouve dans le dossier :
+📁 `atelier-angular/`
+
+## Exercices Implémentés
+✅ Activité 1: Interpolation de chaînes
+✅ Activité 2: Property Binding  
+✅ Activité 3: Event Binding
+✅ Activité 4: Two-Way Data Binding avec ngModel
+✅ Activité 5: Binding des Attributs et des Styles
+✅ Activité 6: Communication entre Composants (@Input/@Output)
+✅ Activité 7: Utilisation de @Input
+✅ Activité 8: Binding avec les Pipes
+
+## Comment utiliser
+1. `cd atelier-angular`
+2. `npm install` 
+3. `ng serve`
+4. Ouvrir http://localhost:4200
+
+Pour plus de détails, consulter le fichier `ATELIERS_GUIDE.md`

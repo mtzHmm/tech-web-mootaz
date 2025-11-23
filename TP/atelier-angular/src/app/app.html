@@ -1,0 +1,38 @@
+<div class="container">
+  <header>
+    <h1>{{ title() }}</h1>
+    <p>Démonstration des différentes techniques de binding Angular</p>
+  </header>
+
+  <main>
+    <!-- Activité 1: Interpolation de chaînes -->
+    <section class="section">
+      <h2>Activité 1 : Interpolation de chaînes</h2>
+      <app-bienvenue></app-bienvenue>
+    </section>
+
+    <!-- Activités 2, 3, 5, 7, 8: Composant Produit avec tous les bindings -->
+    <section class="section">
+      <h2>Activités 2-3-5-7-8 : Composant Produit complet</h2>
+      <div class="produits-container">
+        <app-produit 
+          *ngFor="let produit of produits"
+          [nomProduit]="produit.nom"
+          (ajouterAuPanier)="onProduitAjoute($event)">
+        </app-produit>
+      </div>
+    </section>
+
+    <!-- Activité 4: Two-way Data Binding -->
+    <section class="section">
+      <h2>Activité 4 : Two-Way Data Binding</h2>
+      <app-utilisateur></app-utilisateur>
+    </section>
+
+    <!-- Activité 6: Communication entre composants -->
+    <section class="section">
+      <h2>Activité 6 : Communication entre composants</h2>
+      <app-panier></app-panier>
+    </section>
+  </main>
+</div>

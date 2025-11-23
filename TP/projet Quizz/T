@@ -1,0 +1,41 @@
+# 🎮 Projet Jeu de Quiz Angular - COMPLET
+
+## 📍 Localisation
+Le projet complet se trouve dans le dossier :
+📁 `quiz-game/`
+
+## ✅ Cahier des Charges - 100% Implémenté
+
+### 🎯 Fonctionnalités Principales
+✅ Gestion des questions (choix multiple + saisie libre)
+✅ Système de scoring (+10/-5 points)
+✅ Affichage dynamique temps réel
+
+### 🔧 Techniques de Binding Angular
+✅ Interpolation {{ }} - Affichage des données
+✅ Property binding [prop] - Propriétés dynamiques  
+✅ Event binding (click) - Gestion des interactions
+✅ Two-way binding [(ngModel)] - Saisie utilisateur
+
+### 🏆 Défis Bonus
+✅ Défi 1: Blocage réponses multiples
+✅ Défi 2: Stats temps réel (bonnes/mauvaises)
+✅ Défi 3: Chronomètre 15s par question
+
+## 🚀 Lancement
+```bash
+cd quiz-game
+npm install
+ng serve
+```
+➡️ http://localhost:4200
+
+## 📖 Documentation
+Voir `QUIZ_GUIDE_COMPLET.md` pour tous les détails techniques
+
+## 🎨 Fonctionnalités Avancées
+- Interface responsive et moderne
+- Animations CSS (timer qui pulse)
+- Feedback visuel immédiat
+- Taux de réussite calculé
+- Possibilité de rejouer

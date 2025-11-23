@@ -1,0 +1,130 @@
+<div class="game-container">
+  <!-- En-tête avec statistiques -->
+  <header class="game-header">
+    <div class="stats">
+      <div class="stat-item">
+        <span class="label">Score:</span>
+        <span class="value">{{ gameStats.score }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Question:</span>
+        <span class="value">{{ gameStats.questionActuelle }}/{{ gameStats.totalQuestions }}</span>
+      </div>
+      <div class="stat-item success">
+        <span class="label">✅ Bonnes:</span>
+        <span class="value">{{ gameStats.bonnesReponses }}</span>
+      </div>
+      <div class="stat-item error">
+        <span class="label">❌ Mauvaises:</span>
+        <span class="value">{{ gameStats.mauvaisesReponses }}</span>
+      </div>
+    </div>
+    
+    <!-- Timer -->
+    <div class="timer" [class.warning]="timer.timeLeft <= 5" [class.stopped]="!timer.isRunning">
+      <div class="timer-circle">
+        <span class="time">{{ timer.timeLeft }}</span>
+      </div>
+      <p class="timer-label">secondes</p>
+    </div>
+  </header>
+
+  <!-- Jeu en cours -->
+  <main class="game-content" *ngIf="!gameFinished">
+    <div class="question-card">
+      <div class="question-header">
+        <h2>{{ currentQuestion.question }}</h2>
+        
+        <!-- Indicateur de réponse -->
+        <div class="answer-indicator" *ngIf="currentQuestion.answered">
+          <span class="indicator" [class.correct]="currentQuestion.isCorrect" [class.incorrect]="!currentQuestion.isCorrect">
+            {{ currentQuestion.isCorrect ? '✅ Correct!' : '❌ Incorrect' }}
+          </span>
+          <p class="correct-answer" *ngIf="!currentQuestion.isCorrect">
+            La bonne réponse était: <strong>{{ currentQuestion.reponse }}</strong>
+          </p>
+        </div>
+      </div>
+
+      <!-- Questions à choix multiple -->
+      <div class="options-container" *ngIf="currentQuestion.type === 'multiple'">
+        <button 
+          *ngFor="let option of currentQuestion.options" 
+          class="option-button"
+          [class.selected]="selectedAnswer === option"
+          [class.correct]="currentQuestion.answered && option === currentQuestion.reponse"
+          [class.incorrect]="currentQuestion.answered && selectedAnswer === option && option !== currentQuestion.reponse"
+          [disabled]="currentQuestion.answered || !timer.isRunning"
+          (click)="onSelectOption(option)">
+          {{ option }}
+        </button>
+      </div>
+
+      <!-- Questions à saisie libre -->
+      <div class="input-container" *ngIf="currentQuestion.type === 'input'">
+        <div class="input-group">
+          <input 
+            type="text" 
+            [(ngModel)]="inputAnswer" 
+            placeholder="Tapez votre réponse..." 
+            class="answer-input"
+            [disabled]="currentQuestion.answered || !timer.isRunning"
+            (keyup.enter)="onSubmitAnswer()">
+          <button 
+            class="submit-button" 
+            [disabled]="!inputAnswer.trim() || currentQuestion.answered || !timer.isRunning"
+            (click)="onSubmitAnswer()">
+            Valider
+          </button>
+        </div>
+        
+        <!-- Affichage de la réponse saisie -->
+        <div class="input-feedback" *ngIf="currentQuestion.answered">
+          <p>Votre réponse: <strong>{{ currentQuestion.selectedAnswer || '(Aucune réponse)' }}</strong></p>
+        </div>
+      </div>
+
+      <!-- Bouton Question Suivante -->
+      <div class="next-button-container" *ngIf="showNextButton">
+        <button class="next-button" (click)="goToNextQuestion()">
+          {{ currentQuestionIndex < questions.length - 1 ? 'Question Suivante ➡️' : 'Voir les Résultats 🏆' }}
+        </button>
+        <p class="auto-progress">Progression automatique dans quelques secondes...</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Écran de fin de jeu -->
+  <div class="game-over" *ngIf="gameFinished">
+    <div class="final-score">
+      <h1>🎉 Quiz Terminé !</h1>
+      <div class="score-summary">
+        <div class="final-stat">
+          <span class="big-number">{{ gameStats.score }}</span>
+          <span class="stat-label">Points Final</span>
+        </div>
+        <div class="final-stat">
+          <span class="big-number success-color">{{ gameStats.bonnesReponses }}</span>
+          <span class="stat-label">Bonnes Réponses</span>
+        </div>
+        <div class="final-stat">
+          <span class="big-number error-color">{{ gameStats.mauvaisesReponses }}</span>
+          <span class="stat-label">Mauvaises Réponses</span>
+        </div>
+      </div>
+      
+      <div class="percentage">
+        <p>Taux de réussite: {{ ((gameStats.bonnesReponses / gameStats.totalQuestions) * 100).toFixed(1) }}%</p>
+      </div>
+      
+      <div class="actions">
+        <button class="action-button restart" (click)="restartGame()">
+          🔄 Recommencer
+        </button>
+        <button class="action-button home" (click)="goHome()">
+          🏠 Accueil
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
