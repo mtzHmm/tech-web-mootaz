@@ -1,0 +1,212 @@
+<!-- TP Angular - Directives Structurelles et Attributs -->
+<div class="game-container">
+  
+  <!-- En-tête avec titre et statistiques -->
+  <header class="game-header">
+    <h1>{{ title }}</h1>
+    
+    <!-- Statistiques du jeu -->
+    <div class="stats-panel">
+      <div class="stat-item">
+        <span class="label">Score:</span>
+        <span class="value" [ngClass]="{'positive-score': gameStats.score > 0, 'negative-score': gameStats.score < 0}">
+          {{ gameStats.score }}
+        </span>
+      </div>
+      <div class="stat-item">
+        <span class="label">Questions:</span>
+        <span class="value">{{ gameStats.answeredQuestions }}/{{ gameStats.totalQuestions }}</span>
+      </div>
+      <div class="stat-item correct">
+        <span class="label">✅ Bonnes:</span>
+        <span class="value">{{ gameStats.correctAnswers }}</span>
+      </div>
+      <div class="stat-item incorrect">
+        <span class="label">❌ Mauvaises:</span>
+        <span class="value">{{ gameStats.incorrectAnswers }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Section principale du jeu -->
+  <main class="game-main">
+    
+    <!-- 1. DIRECTIVES STRUCTURELLES: *ngIf pour affichage conditionnel -->
+    
+    <!-- Affichage de la question actuelle si le jeu n'est pas terminé -->
+    <section class="current-question" *ngIf="!gameFinished && currentQuestion">
+      <div class="question-card">
+        <h2>Question {{ currentQuestionIndex + 1 }}: {{ currentQuestion.question }}</h2>
+        
+        <!-- 2. DIRECTIVES STRUCTURELLES: *ngFor pour itération -->
+        <div class="options-container">
+          <button 
+            *ngFor="let option of currentQuestion.options" 
+            class="option-button"
+            [ngClass]="{
+              'correct-answer': isCorrect(option, currentQuestion),
+              'incorrect-answer': currentQuestion.answered && currentQuestion.selectedAnswer === option && !currentQuestion.isCorrect,
+              'disabled': currentQuestion.answered,
+              'hovered': hoveredOption === option && !currentQuestion.answered
+            }"
+            [ngStyle]="{
+              'opacity': currentQuestion.answered ? '0.7' : '1',
+              'background-color': isSelected(option) && !currentQuestion.answered ? 'lightblue' : null,
+              'transform': hoveredOption === option && !currentQuestion.answered ? 'scale(1.05)' : 'scale(1)',
+              'border-width': currentQuestion.answered && option === currentQuestion.reponse ? '3px' : '1px'
+            }"
+            [disabled]="currentQuestion.answered"
+            (click)="onSelectOption(option, currentQuestion)"
+            (mouseenter)="onMouseEnter(option)"
+            (mouseleave)="onMouseLeave()">
+            {{ option }}
+            <!-- Icône pour la bonne réponse -->
+            <span *ngIf="currentQuestion.answered && option === currentQuestion.reponse" class="correct-icon">✓</span>
+            <!-- Icône pour la mauvaise réponse sélectionnée -->
+            <span *ngIf="currentQuestion.answered && currentQuestion.selectedAnswer === option && !currentQuestion.isCorrect" class="incorrect-icon">✗</span>
+          </button>
+        </div>
+        
+        <!-- 3. DIRECTIVES STRUCTURELLES: *ngIf avec template de référence -->
+        <!-- Feedback conditionnel basé sur la réponse -->
+        <div class="feedback-section" *ngIf="currentQuestion.answered">
+          <div *ngIf="currentQuestion.isCorrect; else incorrectMessage" class="feedback success">
+            <p>🎉 Bonne réponse ! Vous gagnez 10 points.</p>
+          </div>
+          <ng-template #incorrectMessage>
+            <div class="feedback error">
+              <p>❌ Mauvaise réponse. La bonne réponse était: <strong>{{ currentQuestion.reponse }}</strong></p>
+              <p>Vous perdez 5 points.</p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. COMBINAISON *ngIf et *ngFor: Affichage de toutes les questions avec état -->
+    <section class="all-questions" *ngIf="!gameFinished">
+      <h3>📝 Toutes les Questions</h3>
+      <div class="questions-overview">
+        <!-- Afficher toutes les questions avec leur état -->
+        <div *ngFor="let question of questions; let i = index" class="question-overview-item">
+          
+          <!-- Question non répondue -->
+          <div *ngIf="!question.answered" class="question-preview pending">
+            <span class="question-number">{{ i + 1 }}</span>
+            <span class="question-text">{{ question.question }}</span>
+            <span class="status pending-status">En attente...</span>
+          </div>
+          
+          <!-- Question répondue -->
+          <div *ngIf="question.answered" class="question-preview answered"
+               [ngClass]="{'correct-preview': question.isCorrect, 'incorrect-preview': !question.isCorrect}">
+            <span class="question-number">{{ i + 1 }}</span>
+            <span class="question-text">{{ question.question }}</span>
+            <span class="user-answer">Votre réponse: {{ question.selectedAnswer }}</span>
+            <span class="status" [ngClass]="{'correct-status': question.isCorrect, 'incorrect-status': !question.isCorrect}">
+              {{ question.isCorrect ? '✅ Correct' : '❌ Incorrect' }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. DIRECTIVES STRUCTURELLES: *ngIf pour bouton conditionnel -->
+    <!-- Bouton "Terminer le jeu" qui n'apparaît que quand toutes les questions sont répondues -->
+    <section class="game-controls" *ngIf="allQuestionsAnswered && !gameFinished">
+      <button class="finish-game-button" (click)="gameFinished = true">
+        🏆 Terminer le Jeu
+      </button>
+    </section>
+
+    <!-- 6. ÉCRAN DE FIN: *ngIf conditionnel -->
+    <section class="game-results" *ngIf="gameFinished">
+      <div class="results-card">
+        <h2>🎯 Résultats du Jeu</h2>
+        
+        <!-- Score final avec style conditionnel -->
+        <div class="final-score" 
+             [ngClass]="{'excellent-score': gameStats.score >= 40, 'good-score': gameStats.score >= 20, 'poor-score': gameStats.score < 20}">
+          <h3>Score Final: {{ gameStats.score }} points</h3>
+          
+          <!-- Message conditionnel basé sur le score -->
+          <p *ngIf="gameStats.score >= 40" class="score-message excellent">
+            🌟 Excellent ! Vous maîtrisez le sujet !
+          </p>
+          <p *ngIf="gameStats.score >= 20 && gameStats.score < 40" class="score-message good">
+            👍 Bien joué ! Continuez vos efforts !
+          </p>
+          <p *ngIf="gameStats.score < 20" class="score-message poor">
+            💪 Il faut encore s'entraîner !
+          </p>
+        </div>
+        
+        <!-- 7. HISTORIQUE DES RÉPONSES: *ngFor avec données complexes -->
+        <div class="answer-history">
+          <h4>📊 Historique des Réponses</h4>
+          <div class="history-list">
+            <div *ngFor="let answer of answerHistory; let i = index" 
+                 class="history-item"
+                 [ngClass]="{'correct-history': answer.isCorrect, 'incorrect-history': !answer.isCorrect}">
+              <div class="history-question">
+                <span class="question-number">Q{{ answer.questionId }}</span>
+                <span class="question-text">{{ answer.question }}</span>
+              </div>
+              <div class="history-answers">
+                <div class="selected-answer" [ngClass]="{'correct-selection': answer.isCorrect, 'incorrect-selection': !answer.isCorrect}">
+                  <strong>Votre réponse:</strong> {{ answer.selectedAnswer }}
+                </div>
+                <div class="correct-answer" *ngIf="!answer.isCorrect">
+                  <strong>Réponse correcte:</strong> {{ answer.correctAnswer }}
+                </div>
+              </div>
+              <div class="history-status">
+                <span [ngClass]="{'status-correct': answer.isCorrect, 'status-incorrect': !answer.isCorrect}">
+                  {{ answer.isCorrect ? '✅ Correct' : '❌ Incorrect' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Statistiques finales -->
+        <div class="final-stats">
+          <div class="stat-grid">
+            <div class="stat-box correct-stat">
+              <div class="stat-value">{{ gameStats.correctAnswers }}</div>
+              <div class="stat-label">Bonnes Réponses</div>
+            </div>
+            <div class="stat-box incorrect-stat">
+              <div class="stat-value">{{ gameStats.incorrectAnswers }}</div>
+              <div class="stat-label">Mauvaises Réponses</div>
+            </div>
+            <div class="stat-box percentage-stat">
+              <div class="stat-value">{{ ((gameStats.correctAnswers / gameStats.totalQuestions) * 100) | number:'1.0-0' }}%</div>
+              <div class="stat-label">Réussite</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Bouton recommencer -->
+        <button class="restart-button" (click)="restartGame()">
+          🔄 Recommencer le Jeu
+        </button>
+      </div>
+    </section>
+
+  </main>
+  
+  <!-- Indicateur de progression -->
+  <footer class="game-footer" *ngIf="!gameFinished">
+    <div class="progress-bar">
+      <div class="progress-fill" 
+           [ngStyle]="{'width': ((gameStats.answeredQuestions / gameStats.totalQuestions) * 100) + '%'}"
+           [ngClass]="{'progress-complete': allQuestionsAnswered}">
+      </div>
+    </div>
+    <p class="progress-text">
+      Progression: {{ gameStats.answeredQuestions }}/{{ gameStats.totalQuestions }} questions
+    </p>
+  </footer>
+  
+</div>

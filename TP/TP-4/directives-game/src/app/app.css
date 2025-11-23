@@ -1,0 +1,586 @@
+/* TP Angular - Styles pour Directives Structurelles et Attributs */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+}
+
+.game-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* En-tête et Statistiques */
+.game-header {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.game-header h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.stats-panel {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 10px;
+  background: #f8f9fa;
+  min-width: 120px;
+}
+
+.stat-item .label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.stat-item .value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Classes conditionnelles pour les scores */
+.positive-score {
+  color: #28a745 !important;
+}
+
+.negative-score {
+  color: #dc3545 !important;
+}
+
+.stat-item.correct .value {
+  color: #28a745;
+}
+
+.stat-item.incorrect .value {
+  color: #dc3545;
+}
+
+/* Section principale */
+.game-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Question actuelle */
+.current-question {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.question-card h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+/* Conteneur des options */
+.options-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+/* Boutons d'options */
+.option-button {
+  padding: 15px 20px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.option-button:hover:not(:disabled) {
+  border-color: #007bff;
+  background: #f8f9fa;
+}
+
+.option-button:disabled {
+  cursor: not-allowed;
+}
+
+/* Classes conditionnelles pour les réponses */
+.correct-answer {
+  background-color: #d4edda !important;
+  border-color: #28a745 !important;
+  color: #155724 !important;
+}
+
+.incorrect-answer {
+  background-color: #f8d7da !important;
+  border-color: #dc3545 !important;
+  color: #721c24 !important;
+}
+
+.disabled {
+  opacity: 0.7 !important;
+}
+
+.hovered {
+  transform: scale(1.05) !important;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+}
+
+/* Icônes de réponse */
+.correct-icon {
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.incorrect-icon {
+  color: #dc3545;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* Section de feedback */
+.feedback-section {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.feedback.success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #28a745;
+}
+
+.feedback.error {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #dc3545;
+}
+
+/* Vue d'ensemble des questions */
+.all-questions {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.all-questions h3 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.questions-overview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.question-overview-item {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.question-preview {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: 50px 1fr auto;
+  align-items: center;
+  gap: 15px;
+}
+
+.question-preview.pending {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+}
+
+.question-preview.answered {
+  background: #f8f9fa;
+}
+
+.correct-preview {
+  border-left: 4px solid #28a745 !important;
+  background: #d4edda !important;
+}
+
+.incorrect-preview {
+  border-left: 4px solid #dc3545 !important;
+  background: #f8d7da !important;
+}
+
+.question-number {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.question-text {
+  color: #333;
+}
+
+.user-answer {
+  font-size: 0.9rem;
+  color: #666;
+  grid-column: 2;
+}
+
+.status {
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+.pending-status {
+  background: #ffc107;
+  color: white;
+}
+
+.correct-status {
+  background: #28a745;
+  color: white;
+}
+
+.incorrect-status {
+  background: #dc3545;
+  color: white;
+}
+
+/* Contrôles du jeu */
+.game-controls {
+  text-align: center;
+}
+
+.finish-game-button {
+  padding: 15px 30px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.finish-game-button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* Résultats du jeu */
+.game-results {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.results-card h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+/* Score final avec classes conditionnelles */
+.final-score {
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 30px;
+}
+
+.excellent-score {
+  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+  border: 2px solid #f39c12;
+}
+
+.good-score {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  border: 2px solid #17a2b8;
+}
+
+.poor-score {
+  background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+  border: 2px solid #e74c3c;
+}
+
+.score-message {
+  margin-top: 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.score-message.excellent {
+  color: #e67e22;
+}
+
+.score-message.good {
+  color: #2980b9;
+}
+
+.score-message.poor {
+  color: #c0392b;
+}
+
+/* Historique des réponses */
+.answer-history {
+  margin-bottom: 30px;
+}
+
+.answer-history h4 {
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.history-item {
+  padding: 15px;
+  border-radius: 10px;
+  border-left: 4px solid #ddd;
+}
+
+.correct-history {
+  background: #d4edda;
+  border-left-color: #28a745 !important;
+}
+
+.incorrect-history {
+  background: #f8d7da;
+  border-left-color: #dc3545 !important;
+}
+
+.history-question {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.history-question .question-number {
+  background: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+}
+
+.history-answers {
+  margin-bottom: 10px;
+}
+
+.selected-answer {
+  margin-bottom: 5px;
+}
+
+.correct-selection {
+  color: #155724;
+}
+
+.incorrect-selection {
+  color: #721c24;
+}
+
+.history-status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.status-correct {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.status-incorrect {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* Statistiques finales */
+.final-stats {
+  margin-bottom: 30px;
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+}
+
+.stat-box {
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.correct-stat {
+  background: #d4edda;
+  border: 2px solid #28a745;
+}
+
+.incorrect-stat {
+  background: #f8d7da;
+  border: 2px solid #dc3545;
+}
+
+.percentage-stat {
+  background: #d1ecf1;
+  border: 2px solid #17a2b8;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Bouton recommencer */
+.restart-button {
+  width: 100%;
+  padding: 15px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.restart-button:hover {
+  background: #218838;
+  transform: translateY(-2px);
+}
+
+/* Barre de progression */
+.game-footer {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 20px;
+  background: #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #007bff 0%, #28a745 100%);
+  transition: width 0.5s ease;
+}
+
+.progress-complete {
+  background: #28a745 !important;
+}
+
+.progress-text {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stats-panel {
+    flex-direction: column;
+  }
+  
+  .options-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .question-preview {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .user-answer {
+    grid-column: 1;
+  }
+  
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.history-item {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Transitions pour les directives ngClass et ngStyle */
+.option-button {
+  transition: all 0.3s ease, background-color 0.2s ease, transform 0.2s ease, opacity 0.2s ease !important;
+}
+
+.feedback {
+  animation: fadeIn 0.5s ease;
+}
+
+.final-score {
+  animation: fadeIn 0.8s ease;
+}
