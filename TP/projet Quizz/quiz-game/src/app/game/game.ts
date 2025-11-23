@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -72,7 +72,8 @@ export class Game implements OnInit, OnDestroy {
   gameFinished = false;
   showNextButton = false;
 
-  constructor(private router: Router) {}
+  private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
 
   // Méthode pour forcer le démarrage (debug)
   forceStartTimer(): void {
@@ -103,6 +104,9 @@ export class Game implements OnInit, OnDestroy {
     this.timerInterval = setInterval(() => {
       if (this.timer.isRunning && this.timer.timeLeft > 0) {
         this.timer.timeLeft--;
+        
+        // Force change detection for zoneless Angular
+        this.cdr.detectChanges();
         
         if (this.timer.timeLeft === 0) {
           this.timeUp();

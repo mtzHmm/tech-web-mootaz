@@ -38,10 +38,13 @@
         <!-- Indicateur de réponse -->
         <div class="answer-indicator" *ngIf="currentQuestion.answered">
           <span class="indicator" [class.correct]="currentQuestion.isCorrect" [class.incorrect]="!currentQuestion.isCorrect">
-            {{ currentQuestion.isCorrect ? '✅ Correct!' : '❌ Incorrect' }}
+            {{ currentQuestion.isCorrect ? '✅ Correct!' : (currentQuestion.selectedAnswer === '(Temps écoulé)' ? '⏰ Temps écoulé!' : '❌ Incorrect') }}
           </span>
           <p class="correct-answer" *ngIf="!currentQuestion.isCorrect">
             La bonne réponse était: <strong>{{ currentQuestion.reponse }}</strong>
+          </p>
+          <p class="time-expired-message" *ngIf="currentQuestion.selectedAnswer === '(Temps écoulé)'">
+            <em>Vous n'avez pas répondu à temps !</em>
           </p>
         </div>
       </div>
