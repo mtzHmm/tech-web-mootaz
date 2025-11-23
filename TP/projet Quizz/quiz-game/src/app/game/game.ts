@@ -125,6 +125,8 @@ export class Game implements OnInit, OnDestroy {
 
   timeUp(): void {
     this.stopTimer();
+    // Force change detection when time expires
+    this.cdr.detectChanges();
     this.processAnswer('', true);
   }
 
@@ -156,26 +158,39 @@ export class Game implements OnInit, OnDestroy {
     
     const question = this.currentQuestion;
     question.answered = true;
-    question.selectedAnswer = answer;
     
-    const isCorrect = answer.toLowerCase() === question.reponse.toLowerCase();
-    question.isCorrect = isCorrect;
-    
-    if (isCorrect && !timeExpired) {
-      this.gameStats.score += 10;
-      this.gameStats.bonnesReponses++;
-    } else {
+    // Si le temps est écoulé, marquer spécialement
+    if (timeExpired) {
+      question.selectedAnswer = '(Temps écoulé)';
+      question.isCorrect = false; // Toujours faux si temps écoulé
       this.gameStats.score = Math.max(0, this.gameStats.score - 5);
       this.gameStats.mauvaisesReponses++;
+    } else {
+      question.selectedAnswer = answer;
+      const isCorrect = answer.trim() !== '' && answer.toLowerCase() === question.reponse.toLowerCase();
+      question.isCorrect = isCorrect;
+      
+      if (isCorrect) {
+        this.gameStats.score += 10;
+        this.gameStats.bonnesReponses++;
+      } else {
+        this.gameStats.score = Math.max(0, this.gameStats.score - 5);
+        this.gameStats.mauvaisesReponses++;
+      }
     }
     
     this.showNextButton = true;
     
+    // Force change detection
+    this.cdr.detectChanges();
+    
+    // Auto-passage à la prochaine question après délai
+    const delayTime = timeExpired ? 1500 : 2500; // Plus court si temps écoulé
     setTimeout(() => {
       if (this.showNextButton) {
         this.goToNextQuestion();
       }
-    }, 2000);
+    }, delayTime);
   }
 
   // Aller à la question suivante (appelée par le bouton ou automatiquement)
