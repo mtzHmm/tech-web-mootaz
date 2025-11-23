@@ -35,13 +35,17 @@
       <div class="question-header">
         <h2>{{ currentQuestion.question }}</h2>
         
-        <!-- Indicateur de réponse -->
+        <!-- Indication de réponse -->
         <div class="answer-indicator" *ngIf="currentQuestion.answered">
           <span class="indicator" [class.correct]="currentQuestion.isCorrect" [class.incorrect]="!currentQuestion.isCorrect">
             {{ currentQuestion.isCorrect ? '✅ Correct!' : '❌ Incorrect' }}
+            {{ !currentQuestion.selectedAnswer ? ' - Temps écoulé!' : '' }}
           </span>
           <p class="correct-answer" *ngIf="!currentQuestion.isCorrect">
             La bonne réponse était: <strong>{{ currentQuestion.reponse }}</strong>
+          </p>
+          <p class="timeout-message" *ngIf="!currentQuestion.selectedAnswer">
+            ⏰ Vous n'avez pas répondu dans les temps impartis. Passage à la question suivante...
           </p>
         </div>
       </div>
@@ -89,7 +93,9 @@
         <button class="next-button" (click)="goToNextQuestion()">
           {{ currentQuestionIndex < questions.length - 1 ? 'Question Suivante ➡️' : 'Voir les Résultats 🏆' }}
         </button>
-        <p class="auto-progress">Progression automatique dans quelques secondes...</p>
+        <p class="auto-progress">
+          {{ !currentQuestion.selectedAnswer ? 'Passage automatique dans 2 secondes...' : 'Progression automatique dans quelques secondes...' }}
+        </p>
       </div>
     </div>
   </main>

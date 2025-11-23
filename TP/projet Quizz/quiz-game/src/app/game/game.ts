@@ -120,8 +120,30 @@ export class Game implements OnInit, OnDestroy {
   }
 
   timeUp(): void {
+    if (this.currentQuestion.answered) {
+      return; // Éviter de traiter si déjà répondu
+    }
     this.stopTimer();
-    this.processAnswer('', true);
+    
+    // Marquer la question comme répondue avec une réponse vide
+    const question = this.currentQuestion;
+    question.answered = true;
+    question.selectedAnswer = ''; // Réponse vide pour timeout
+    question.isCorrect = false;
+    
+    // Mettre à jour les statistiques pour mauvaise réponse
+    this.gameStats.score = Math.max(0, this.gameStats.score - 5);
+    this.gameStats.mauvaisesReponses++;
+    
+    // Afficher le bouton suivant
+    this.showNextButton = true;
+    
+    // Progression automatique plus rapide pour timeout
+    setTimeout(() => {
+      if (this.showNextButton) {
+        this.goToNextQuestion();
+      }
+    }, 2000);
   }
 
   // Sélectionner une option (boutons)
@@ -154,7 +176,10 @@ export class Game implements OnInit, OnDestroy {
     question.answered = true;
     question.selectedAnswer = answer;
     
-    const isCorrect = answer.toLowerCase() === question.reponse.toLowerCase();
+    // Comparaison plus flexible pour les réponses écrites
+    const userAnswer = answer.trim().toLowerCase();
+    const correctAnswer = question.reponse.toLowerCase();
+    const isCorrect = userAnswer === correctAnswer;
     question.isCorrect = isCorrect;
     
     if (isCorrect && !timeExpired) {
